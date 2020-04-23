@@ -4,7 +4,7 @@ from pytube import YouTube
 import ffmpeg
 
 
-def dl_vid(url):
+def dl_vid(url, tomp3):
     yt = YouTube(url)
     title = yt.title
 
@@ -23,7 +23,8 @@ def dl_vid(url):
         .first()
         .download(filename=title_trim))
 
-    convert(title_trim+".mp4", title_trim+".mp3")
+    if tomp3:
+        convert(title_trim+".mp4", title_trim+".mp3")
     print('Finished downloading: ' + title)
 
 
@@ -35,11 +36,15 @@ def convert(name_vid, name_sound):
 
 if __name__ == '__main__':
     ps = []
+    to_mp3 = False
     for url in sys.argv[1:]:
-        p = Process(target=dl_vid, args=(url,))
-        ps.append(p)
-        p.start()
-   
+        if url == "-mp3":
+            to_mp3 = True
+        else:
+            p = Process(target=dl_vid, args=(url,to_mp3))
+            ps.append(p)
+            p.start()
+
     for p in ps:
         p.join()
 
