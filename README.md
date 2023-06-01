@@ -26,3 +26,5 @@ deactivate the virtual environment:
 ### 'no module named pip' fix
 `python3 -m ensurepip`
 
+### 'urllib.error.HTTPError: HTTP Error 410: Gone' fix
+`python -m pip install --upgrade pytube`
